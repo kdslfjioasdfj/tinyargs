@@ -20,7 +20,7 @@ Parameters:
 - `const char *arg`: The name of the current argument
 - `const char **val`: The arguments passed after the current one
 
-### tinyargs_arg_s && tinyargs_callback_t
+### struct tinyargs_arg_s && tinyargs_arg_t
 
 The argument schema used by **TinyArgs**.
 
@@ -33,7 +33,7 @@ typedef struct tinyargs_arg_s {
   tinyargs_callback_t action;
   int n_args;
   uint8_t type;
-} tinyargs_arg_t
+} tinyargs_arg_t;
 ```
 
 Members:
@@ -68,7 +68,7 @@ Parameters:
 - `argc`: The amount of arguments in `argv`
 - `argv`: The argument vector
 - `shared_ctx`: This will be passed to all callbacks upon successful matching
-- `int *last`: Upon success, this is the first positional argument encountered. Upon error, the argument that caused the error. If unwanted, this can be `NULL`
+- `int *last`: Upon success, this is the first positional argument encountered. Upon error, the argument that caused the error. If unwanted, this can be `NULL`. If an invalid parameter was passed, this will be 1
 
 Possible return values:
 | Value | Meaning |
@@ -85,9 +85,14 @@ Notes:
 - Flag grouping is NOT supported. `-abc` is not treated as `-a -b -c`.
 - GNU-style assignment is NOT supported. `--value=VALUE` is not treated as `--value VALUE`.
 - No automatic help printing is supported.
+- A single hyphen `-` is treated as a positional argument.
 
 ## Disclaimers
 
 1. Do not depend on any undocumented items; these are solely internal and not meant for usage
 2. This library expects `argv` to end in `NULL`, where `argv[argc] == NULL`
 3. This library assumes all strings are null-terminated (end in `\0`).
+
+## Compatibility Notes
+
+If you are linking with a shared library to use **TinyArgs** (presumably using `premake5 <system> --shared`), `TINYARGS_CONFIG_SHARED` must be defined, otherwise, there may be _linker errors_.
