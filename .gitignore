@@ -62,6 +62,7 @@ Thumbs.db
 Makefile
 Makefile.*
 *.mk
+*.make
 *.d
 
 # CMake Build artefacts
