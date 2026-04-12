@@ -47,6 +47,7 @@ Members:
 Notes:
 If `type & TINYARGS_TYPES_LONG` is true, `name` will be prefixed with `--` automatically.
 If `type & TINYARGS_TYPES_SHORT` is true, `name` will be prefixed with `-` automatically.
+Prefixing with `-` or `--` yourself is undefined behavior.
 
 ## Functions
 
@@ -80,7 +81,7 @@ Possible return values:
 
 Notes:
 
-- If 2 argument definitions conflict (for example: `{"name", NULL, func1, 0, TINYARGS_TYPES_LONG}` and `{"-name", NULL, func2, 0, TINYARGS_TYPES_SHORT}`), only the first one in `args` is ran; the following callbacks will never be called.
+- If `(args[N]).name[0] == '-'`, for all `N` where `N < count`, the behavior is not defined.
 - If any argument is called `--`, the parsing will immediately end, regardless of if said argument was defined in the schema.
 - Flag grouping is NOT supported. `-abc` is not treated as `-a -b -c`.
 - GNU-style assignment is NOT supported. `--value=VALUE` is not treated as `--value VALUE`.
